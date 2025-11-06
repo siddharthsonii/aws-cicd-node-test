@@ -25,6 +25,15 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
           SOURCE: "."
-          REMOTE_HOST: ec2-54-145-1-248.compute-1.amazonaws.com
+          REMOTE_HOST: "ec2-54-145-1-248.compute-1.amazonaws.com"
           REMOTE_USER: "ubuntu"
           TARGET: "/var/www/aws-cicd-node-test/"
+
+      - name: restart server
+        uses: appleboy/ssh-action@master
+        with:
+          host: "ec2-54-145-1-248.compute-1.amazonaws.com"
+          username: "ubuntu"
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: pm2 restart all
